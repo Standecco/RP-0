@@ -2377,7 +2377,11 @@
         "entry_cost": "2000",
         "category": "COMMS",
         "info": "Dish",
+<<<<<<< master
         "year": "1971",
+=======
+        "year": "1972",
+>>>>>>> Adjust antennas
         "technology": "advancedComms",
         "era": "05-LUNAR",
         "ro": true,
