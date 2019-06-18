@@ -36,7 +36,7 @@ namespace RP0.ProceduralAvionics
 
         [KSPField(isPersistant = true, guiName = "Tonnage", guiActive = false, guiActiveEditor = true, guiUnits = "\u2009t"),
 		 UI_FloatEdit(scene = UI_Scene.Editor, minValue = 0f, incrementLarge = 10f, incrementSmall = 1f, incrementSlide = 0.05f, sigFigs = 3, unit = "\u2009t")]
-		public float proceduralMassLimit = 0;
+		public float controllableMass = 0;
 
 		[KSPField(isPersistant = true, guiActiveEditor = true, guiActive = false, guiName = "Configuration"), UI_ChooseOption(scene = UI_Scene.Editor)]
 		public string avionicsConfigName;
@@ -169,15 +169,22 @@ namespace RP0.ProceduralAvionics
 =======
 		protected override float GetInternalMassLimit()
 		{
+<<<<<<< master
             var oldLimit = proceduralMassLimit;
             ClampInternalMassLimit();
             if(proceduralMassLimit != oldLimit)
 >>>>>>> Start root avionics
+=======
+            var oldLimit = controllableMass;
+            ClampControllableMass();
+            if(controllableMass != oldLimit)
+>>>>>>> Renamings
             {
                 Log($"Resetting procedural mass limit to {maxControllableMass}, was {controllableMass}");
                 controllableMass = maxControllableMass;
                 MonoUtilities.RefreshContextWindows(part);
             }
+<<<<<<< master
         }
 
         private float GetControllableMass(float avionicsMass) 
@@ -193,6 +200,12 @@ namespace RP0.ProceduralAvionics
         private float GetAvionicsVolume() => GetAvionicsMass() / CurrentProceduralAvionicsTechNode.avionicsDensity;
 
         private float GetShieldedAvionicsMass()
+=======
+            return controllableMass;
+		}
+
+        private void ClampControllableMass()
+>>>>>>> Renamings
         {
             var avionicsMass = GetAvionicsMass();
             return avionicsMass + GetShieldingMass(avionicsMass);
@@ -241,16 +254,16 @@ namespace RP0.ProceduralAvionics
             var min = GetMinimumControllableTonnage();
 
             bool changed = false;
-            if (proceduralMassLimit > max * FLOAT_TOLERANCE)
+            if (controllableMass > max * FLOAT_TOLERANCE)
             {
-                Log("Resetting procedural mass limit to max of ", max, ", was ", proceduralMassLimit);
-                proceduralMassLimit = max;
+                Log("Resetting procedural mass limit to max of ", max, ", was ", controllableMass);
+                controllableMass = max;
                 changed = true;
             }
-            if (proceduralMassLimit * FLOAT_TOLERANCE < min)
+            if (controllableMass * FLOAT_TOLERANCE < min)
             {
-                Log("Resetting procedural mass limit to min of ", min, ", was ", proceduralMassLimit);
-                proceduralMassLimit = min;
+                Log("Resetting procedural mass limit to min of ", min, ", was ", controllableMass);
+                controllableMass = min;
                 changed = true;
             }
             if (changed)
@@ -298,7 +311,7 @@ namespace RP0.ProceduralAvionics
 		}
 
 		private ProceduralAvionicsConfig currentProceduralAvionicsConfig;
-		private UI_FloatEdit proceduralMassLimitEdit;
+		private UI_FloatEdit controllableMassEdit;
 
 		#endregion
 
@@ -377,16 +390,16 @@ namespace RP0.ProceduralAvionics
 		private void BindUIChangeCallbacks()
 		{
 			if (!callbacksBound) {
-				Fields[nameof(proceduralMassLimit)].uiControlEditor.onFieldChanged += MassLimitChanged;
+				Fields[nameof(controllableMass)].uiControlEditor.onFieldChanged += ControllableMassChanged;
 				Fields[nameof(avionicsConfigName)].uiControlEditor.onFieldChanged += AvionicsConfigChanged;
 				callbacksBound = true;
 			}
 		}
 
-		private void MassLimitChanged(BaseField arg1, object arg2)
+		private void ControllableMassChanged(BaseField arg1, object arg2)
 		{
 			Log("Mass limit changed");
-            ClampInternalMassLimit();
+            ClampControllableMass();
             SetMinVolume();
             RefreshDisplays();
 		}
@@ -414,7 +427,7 @@ namespace RP0.ProceduralAvionics
             oldAvionicsTechLevel = avionicsTechLevel;
             SetInternalKSPFields();
             ResetTo100();
-            ClampInternalMassLimit();
+            ClampControllableMass();
             SetMinVolume(true);
             UpdateMaxValues();
             OnConfigurationUpdated();
@@ -425,7 +438,7 @@ namespace RP0.ProceduralAvionics
 		private float cachedMinVolume = float.MaxValue;
 		public void SetMinVolume(bool forceUpdate = false)
 		{
-			Log("Setting min volume for proceduralMassLimit of ", proceduralMassLimit);
+			Log("Setting min volume for proceduralMassLimit of ", controllableMass);
 			float minVolume = GetAvionicsMass() / avionicsDensity * FLOAT_TOLERANCE;
 			if (float.IsNaN(minVolume)) {
 				return;
@@ -544,9 +557,13 @@ namespace RP0.ProceduralAvionics
                 Log($"Defaulting avionics tech level to {avionicsTechLevel}");
             }
 <<<<<<< master
+<<<<<<< master
         }
 =======
             proceduralMassLimit = GetControllableMass(MaxAvionicsMass);
+=======
+            controllableMass = GetControllableMass(MaxAvionicsMass);
+>>>>>>> Renamings
 		}
 >>>>>>> Start root avionics
 
@@ -559,6 +576,7 @@ namespace RP0.ProceduralAvionics
         }
 
 <<<<<<< master
+<<<<<<< master
         private void SetupConfigNameFields()
         {
             Fields[nameof(avionicsConfigName)].guiActiveEditor = true;
@@ -567,6 +585,10 @@ namespace RP0.ProceduralAvionics
 =======
 			if (proceduralMassLimitEdit == null) {
 				proceduralMassLimitEdit = (UI_FloatEdit)Fields[nameof(proceduralMassLimit)].uiControlEditor;
+=======
+			if (controllableMassEdit == null) {
+				controllableMassEdit = (UI_FloatEdit)Fields[nameof(controllableMass)].uiControlEditor;
+>>>>>>> Renamings
 			}
 >>>>>>> Start root avionics
 
@@ -585,6 +607,7 @@ namespace RP0.ProceduralAvionics
             Fields[nameof(massLimit)].guiActiveEditor = false;
             if (!(GetSeekVolumeMethod(out PartModule _) is System.Reflection.MethodInfo))
             {
+<<<<<<< master
                 Events[nameof(SeekVolume)].active = Events[nameof(SeekVolume)].guiActiveEditor = false;
                 Fields[nameof(targetUtilization)].guiActiveEditor = false;
             }
@@ -601,17 +624,27 @@ namespace RP0.ProceduralAvionics
 =======
                 proceduralMassLimitEdit.maxValue = CeilingToSmallIncrement(GetMaximumControllableTonnage());
                 proceduralMassLimitEdit.minValue = 0;
+=======
+                controllableMassEdit.maxValue = CeilingToSmallIncrement(GetMaximumControllableTonnage());
+                controllableMassEdit.minValue = 0;
+>>>>>>> Renamings
 
-                proceduralMassLimitEdit.incrementSmall = GetSmallIncrement(proceduralMassLimitEdit.maxValue);
-                proceduralMassLimitEdit.incrementLarge = proceduralMassLimitEdit.incrementSmall * 10;
-                proceduralMassLimitEdit.incrementSlide = GetSliderIncrement(proceduralMassLimitEdit.maxValue);
-                proceduralMassLimitEdit.sigFigs = GetSigFigs(proceduralMassLimitEdit.maxValue);
+                controllableMassEdit.incrementSmall = GetSmallIncrement(controllableMassEdit.maxValue);
+                controllableMassEdit.incrementLarge = controllableMassEdit.incrementSmall * 10;
+                controllableMassEdit.incrementSlide = GetSliderIncrement(controllableMassEdit.maxValue);
+                controllableMassEdit.sigFigs = GetSigFigs(controllableMassEdit.maxValue);
             }
             else
 >>>>>>> Start root avionics
             {
+<<<<<<< master
                 // Formula for controllable mass given avionics mass is Mathf.Pow(1000*avionicsMass / massFactor - massConstant, 1 / massExponent)
                 controllableMassEdit.maxValue = Mathf.Max(GetMaximumControllableMass(), 0.001f);
+=======
+                Log("Cannot update max value yet, CurrentProceduralAvionicsConfig is null");
+                controllableMassEdit.maxValue = float.MaxValue;
+                controllableMassEdit.minValue = 0;
+>>>>>>> Renamings
             }
             else
                 controllableMassEdit.maxValue = 0.001f;
