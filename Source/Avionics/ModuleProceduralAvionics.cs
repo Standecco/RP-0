@@ -401,6 +401,7 @@ namespace RP0.ProceduralAvionics
 			Log("Mass limit changed");
             ClampControllableMass();
             SetMinVolume();
+            SendRemainingVolume();
             RefreshDisplays();
 		}
 >>>>>>> Start root avionics
@@ -430,6 +431,7 @@ namespace RP0.ProceduralAvionics
             ClampControllableMass();
             SetMinVolume(true);
             UpdateMaxValues();
+            SendRemainingVolume();
             OnConfigurationUpdated();
             RefreshDisplays();
 		}
@@ -741,22 +743,25 @@ namespace RP0.ProceduralAvionics
 				cachedEventData = eventData;
 				return;
 			}
-			try {
-				float volume = (float)eventData.Get<double>("newTotalVolume");
-				Log("volume changed to ", volume);
-				if (volume * FLOAT_TOLERANCE < cachedMinVolume && cachedMinVolume != float.MaxValue) {
-					Log("volume of ", volume, " is less than expected min volume of ", cachedMinVolume, " expecting another update");
-					RefreshPartWindow();
-					//assuming the part will be resized
-					return;
-				}
-				Log("setting cachedVolume to ", volume);
-				cachedVolume = volume;
-                //Log("cached total volume set from eventData: ", cachedVolume);
+			try
+            {
+                float volume = (float)eventData.Get<double>("newTotalVolume");
+                Log("volume changed to ", volume);
+                if (volume * FLOAT_TOLERANCE < cachedMinVolume && cachedMinVolume != float.MaxValue)
+                {
+                    Log("volume of ", volume, " is less than expected min volume of ", cachedMinVolume, " expecting another update");
+                    RefreshPartWindow();
+                    //assuming the part will be resized
+                    return;
+                }
+                Log("setting cachedVolume to ", volume);
+                cachedVolume = volume;
+                SendRemainingVolume();
                 UpdateMaxValues();
                 RefreshDisplays();
 >>>>>>> Start root avionics
             }
+<<<<<<< master
             ClampControllableMass();
             massLimit = controllableMass;
             SendRemainingVolume();
@@ -771,6 +776,34 @@ namespace RP0.ProceduralAvionics
 
 <<<<<<< master
         private void AvionicsConfigChanged()
+=======
+            catch (Exception ex) {
+				Log("error getting changed volume: ", ex);
+			}
+		}
+
+        private void SendRemainingVolume()
+        {
+            if(cachedVolume == float.MaxValue)
+            {
+                return;
+            }
+            Log($"Sending remaining volume: {cachedVolume - GetAvionicsMass() / avionicsDensity}");
+            Events[nameof(OnPartVolumeChanged)].active = false;
+            SendVolumeChangedEvent(cachedVolume - GetAvionicsMass() / avionicsDensity);
+            Events[nameof(OnPartVolumeChanged)].active = true;
+        }
+
+        public void SendVolumeChangedEvent(double newVolume)
+        {
+            var data = new BaseEventDetails(BaseEventDetails.Sender.USER);
+            data.Set<string>("volName", "Tankage");
+            data.Set<double>("newTotalVolume", newVolume);
+            part.SendEvent(nameof(OnPartVolumeChanged), data, 0);
+        }
+
+        private void SetInternalKSPFields()
+>>>>>>> Propagate spare volume
         {
             CurrentProceduralAvionicsConfig = ProceduralAvionicsTechManager.GetProceduralAvionicsConfig(avionicsConfigName);
             Log($"Avionics Config changed to: {avionicsConfigName}.  Tech: {avionicsTechLevel}");
