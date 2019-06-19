@@ -120,8 +120,12 @@
     <Compile Include="Tooling\ToolingDefinition.cs" />
     <Compile Include="Tooling\ToolingScenario.cs" />
     <Compile Include="Tooling\ModuleToolingPTank.cs" />
+<<<<<<< master
     <Compile Include="Utilities\CSV\CsvWriter.cs" />
     <Compile Include="Utilities\SphericalTankUtilities.cs" />
+=======
+    <Compile Include="UI\ContractGUI.cs" />
+>>>>>>> Added Contracts tab that allows setting the desired payload amount for last-tier sat contracts; Added virtual OnStart method for UIBase;
     <Compile Include="Utilities\KACWrapper.cs" />
     <Compile Include="Utilities\KSPUtils.cs" />
     <Compile Include="Utilities\MathUtils.cs" />

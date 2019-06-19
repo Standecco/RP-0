@@ -55,10 +55,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< master
     <Compile Include="AcceptContractBehaviour.cs" />
     <Compile Include="AcceptContractBehaviourFactory.cs" />
     <Compile Include="AvionicsCheckFactory.cs" />
     <Compile Include="AvionicsCheckVesselParam.cs" />
+=======
+>>>>>>> Added Contracts tab that allows setting the desired payload amount for last-tier sat contracts; Added virtual OnStart method for UIBase;
     <Compile Include="CustomExpressionParserRegistrer.cs" />
     <Compile Include="DownrangeDistanceFactory.cs" />
     <Compile Include="DownrangeDistanceVesselParam.cs" />
@@ -68,9 +71,14 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RP0.csproj">
+<<<<<<< master
       <Project>{997854F8-4EFB-4A78-87BC-F7C8CEA64669}</Project>
       <Name>RP0</Name>
       <Private>False</Private>
+=======
+      <Project>{997854f8-4efb-4a78-87bc-f7c8cea64669}</Project>
+      <Name>RP0</Name>
+>>>>>>> Added Contracts tab that allows setting the desired payload amount for last-tier sat contracts; Added virtual OnStart method for UIBase;
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

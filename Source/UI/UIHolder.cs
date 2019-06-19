@@ -24,7 +24,11 @@ namespace RP0
 
         protected void Start()
         {
+<<<<<<< master
             tw = new TopWindow();
+=======
+            tw.Start();
+>>>>>>> Added Contracts tab that allows setting the desired payload amount for last-tier sat contracts; Added virtual OnStart method for UIBase;
         }
 
         private void ShowWindow()

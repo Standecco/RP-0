@@ -1,18 +1,20 @@
-﻿using System;
-using UnityEngine;
-using KSP.UI.Screens;
+﻿using UnityEngine;
 
 namespace RP0
 {
     public class TopWindow : UIBase
     {
-        // GUI
         static Rect windowPos = new Rect(500, 240, 0, 0);
+
         private MaintenanceGUI maintUI = new MaintenanceGUI();
         private ToolingGUI toolUI = new ToolingGUI();
         private Crew.FSGUI fsUI = new RP0.Crew.FSGUI();
         private AvionicsGUI avUI = new AvionicsGUI();
+<<<<<<< master
         private CareerLogGUI logUI = new CareerLogGUI();
+=======
+        private ContractGUI contractUI = new ContractGUI();
+>>>>>>> Added Contracts tab that allows setting the desired payload amount for last-tier sat contracts; Added virtual OnStart method for UIBase;
         private static tabs currentTab;
 
         public TopWindow()
@@ -24,6 +26,15 @@ namespace RP0
         public void OnGUI()
         {
             windowPos = GUILayout.Window("RP0Top".GetHashCode(), windowPos, DrawWindow, "RP-1");
+        }
+
+        protected override void OnStart()
+        {
+            maintUI.Start();
+            toolUI.Start();
+            fsUI.Start();
+            avUI.Start();
+            contractUI.Start();
         }
 
         public static void SwitchTabTo(tabs newTab)
@@ -45,8 +56,13 @@ namespace RP0
                     currentTab = tabs.Courses;
                 if (showTab(tabs.Avionics) && toggleButton("Avionics", currentTab == tabs.Avionics))
                     currentTab = tabs.Avionics;
+<<<<<<< master
                 if (showTab(tabs.CareerLog) && toggleButton("Career Log", currentTab == tabs.CareerLog))
                     currentTab = tabs.CareerLog;
+=======
+                if (showTab(tabs.Contracts) && toggleButton("Contracts", currentTab == tabs.Contracts))
+                    currentTab = tabs.Contracts;
+>>>>>>> Added Contracts tab that allows setting the desired payload amount for last-tier sat contracts; Added virtual OnStart method for UIBase;
             } finally {
                 GUILayout.EndHorizontal();
             }
@@ -97,8 +113,13 @@ namespace RP0
                         case tabs.Avionics:
                             avUI.avionicsTab();
                             break;
+<<<<<<< master
                         case tabs.CareerLog:
                             logUI.RenderTab();
+=======
+                        case tabs.Contracts:
+                            contractUI.ContractTab();
+>>>>>>> Added Contracts tab that allows setting the desired payload amount for last-tier sat contracts; Added virtual OnStart method for UIBase;
                             break;
                         default: // can't happen
                             break;

@@ -49,12 +49,27 @@ namespace ContractConfigurator.RP0
         private static void RegisterMethods()
         {
             Debug.Log("[RP0] CustomExpressionParserRegistrer registering methods");
+<<<<<<< master
             RegisterGlobalFunction(new Function<float>("RP1DeadlineMult", GetDeadlineMult, false));
         }
 
         private static float GetDeadlineMult()
         {
             return HighLogic.CurrentGame?.Parameters.CustomParams<RP0Settings>()?.ContractDeadlineMult ?? 1;
+=======
+            RegisterGlobalFunction(new Function<int>("RP1CommsPayload", GetCommsPayload, false));
+            RegisterGlobalFunction(new Function<int>("RP1WeatherPayload", GetWeatherPayload, false));
+        }
+
+        private static int GetCommsPayload()
+        {
+            return ContractGUI.CommsPayload;
+        }
+
+        private static int GetWeatherPayload()
+        {
+            return ContractGUI.WeatherPayload;
+>>>>>>> Added Contracts tab that allows setting the desired payload amount for last-tier sat contracts; Added virtual OnStart method for UIBase;
         }
     }
 }
