@@ -15,6 +15,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
+<<<<<<< master
+=======
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+>>>>>>> Recompiled RP0KCTBinder to work with KCT version starting from 1.4.0.0
     <OutputPath>..\GameData\RP-0\Plugins\</OutputPath>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <DebugType>portable</DebugType>
