@@ -94,6 +94,9 @@ namespace RP0.ProceduralAvionics
         public float massFactor;
 
         [KSPField(isPersistant = true)]
+        public float shieldingMassFactor;
+
+        [KSPField(isPersistant = true)]
         public float costExponent;
 
         [KSPField(isPersistant = true)]
@@ -267,6 +270,7 @@ namespace RP0.ProceduralAvionics
 >>>>>>> Use minimum value > 0 for controllable mass
             {
 <<<<<<< master
+<<<<<<< master
                 try
                 {
                     Log("Loading Avionics Configs");
@@ -279,6 +283,9 @@ namespace RP0.ProceduralAvionics
                 }
 =======
                 Log("NO MAX");
+=======
+                Log("WARNING: NO MAX");
+>>>>>>> Add shielding mass
                 return;
             }
 
@@ -306,12 +313,15 @@ namespace RP0.ProceduralAvionics
             return mass;
         }
 
-        private float GetAvionicsMass()
+        private float GetShieldedAvionicsMass()
         {
-            var mass = GetPolynomial(GetInternalMassLimit(), massExponent, massConstant, massFactor) / 1000f;
-            Log($"Internal mass limit: {GetInternalMassLimit()}, Avionics mass: {mass}");
-            return mass;
+            var avionicsMass = GetAvionicsMass();
+            return avionicsMass + GetShieldingMass(avionicsMass);
         }
+
+        private float GetAvionicsMass() => GetPolynomial(GetInternalMassLimit(), massExponent, massConstant, massFactor) / 1000f;
+
+        private float GetShieldingMass(float avionicsMass) => Mathf.Pow(avionicsMass, 2f / 3) * shieldingMassFactor;
 
         private float GetAvionicsCost() => GetPolynomial(GetInternalMassLimit(), costExponent, costConstant, costFactor);
 
@@ -516,12 +526,12 @@ namespace RP0.ProceduralAvionics
         private float GetMassSafely()
 		{
 			if (HighLogic.LoadedSceneIsFlight || avionicsDensity > 0) {
-                return GetAvionicsMass();
+                return GetShieldedAvionicsMass();
             }
 			if (CurrentProceduralAvionicsConfig != null && CurrentProceduralAvionicsTechNode != null) {
-                Log("Not yet initialized but getmass called!?");
+                Log("WARNING: Not yet initialized but getmass called!?");
                 SetInternalKSPFields();
-				return GetAvionicsMass();
+                return GetShieldedAvionicsMass();
             }
 			else {
 				return 0;
@@ -864,6 +874,7 @@ namespace RP0.ProceduralAvionics
             massExponent = CurrentProceduralAvionicsTechNode.massExponent;
             massConstant = CurrentProceduralAvionicsTechNode.massConstant;
             massFactor = CurrentProceduralAvionicsTechNode.massFactor;
+            shieldingMassFactor = CurrentProceduralAvionicsTechNode.shieldingMassFactor;
             costExponent = CurrentProceduralAvionicsTechNode.costExponent;
             costConstant = CurrentProceduralAvionicsTechNode.costConstant;
             costFactor = CurrentProceduralAvionicsTechNode.costFactor;
