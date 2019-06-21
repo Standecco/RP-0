@@ -130,7 +130,12 @@ namespace RP0.ProceduralAvionics
             return null;
         }
 
+<<<<<<< master
         public ProceduralAvionicsConfig CurrentProceduralAvionicsConfig { get; private set; }
+=======
+		[KSPField(isPersistant = false, guiActive = false, guiActiveEditor = true, guiName = "Avionics Utilization")]
+		public string utilizationDisplay;
+>>>>>>> Use minimum value > 0 for controllable mass
 
         public ProceduralAvionicsTechNode CurrentProceduralAvionicsTechNode
         {
@@ -254,7 +259,12 @@ namespace RP0.ProceduralAvionics
 
         public override void OnLoad(ConfigNode node)
         {
+<<<<<<< master
             if (HighLogic.LoadedScene == GameScenes.LOADING && !_configsLoaded)
+=======
+            var max = GetMaximumControllableMass();
+            if (max == 0)
+>>>>>>> Use minimum value > 0 for controllable mass
             {
 <<<<<<< master
                 try
@@ -450,7 +460,7 @@ namespace RP0.ProceduralAvionics
             ResetTo100();
             ClampControllableMass();
             SetMinVolume(true);
-            UpdateMaxValues();
+            UpdateControllableMassSlider();
             SendRemainingVolume();
             OnConfigurationUpdated();
             RefreshDisplays();
@@ -557,7 +567,7 @@ namespace RP0.ProceduralAvionics
 
 		#endregion
 
-		private float GetMaximumControllableTonnage()
+		private float GetMaximumControllableMass()
 		{
             Log($"Max avionics mass: {MaxAvionicsMass}");
             return FloorToSliderIncrement(GetControllableMass(MaxAvionicsMass));
@@ -579,12 +589,16 @@ namespace RP0.ProceduralAvionics
             }
 <<<<<<< master
 <<<<<<< master
+<<<<<<< master
         }
 =======
             proceduralMassLimit = GetControllableMass(MaxAvionicsMass);
 =======
             controllableMass = GetControllableMass(MaxAvionicsMass);
 >>>>>>> Renamings
+=======
+            controllableMass = GetMaximumControllableMass();
+>>>>>>> Use minimum value > 0 for controllable mass
 		}
 >>>>>>> Start root avionics
 
@@ -599,6 +613,7 @@ namespace RP0.ProceduralAvionics
 
 <<<<<<< master
 <<<<<<< master
+<<<<<<< master
         private void SetupConfigNameFields()
         {
             Fields[nameof(avionicsConfigName)].guiActiveEditor = true;
@@ -610,6 +625,9 @@ namespace RP0.ProceduralAvionics
 =======
 =======
 		private void UpdateMaxValues()
+=======
+		private void UpdateControllableMassSlider()
+>>>>>>> Use minimum value > 0 for controllable mass
 		{
 >>>>>>> Use a real fuels tank for avionics
 			if (controllableMassEdit == null) {
@@ -620,6 +638,7 @@ namespace RP0.ProceduralAvionics
 
             if (string.IsNullOrEmpty(avionicsConfigName))
             {
+<<<<<<< master
 <<<<<<< master
                 avionicsConfigName = range.options[0];
                 Log($"Defaulted config to {avionicsConfigName}");
@@ -654,11 +673,16 @@ namespace RP0.ProceduralAvionics
                 controllableMassEdit.maxValue = CeilingToSmallIncrement(GetMaximumControllableTonnage());
                 controllableMassEdit.minValue = 0;
 >>>>>>> Renamings
+=======
+                controllableMassEdit.maxValue = CeilingToSmallIncrement(GetMaximumControllableMass());
+>>>>>>> Use minimum value > 0 for controllable mass
 
                 controllableMassEdit.incrementSmall = GetSmallIncrement(controllableMassEdit.maxValue);
                 controllableMassEdit.incrementLarge = controllableMassEdit.incrementSmall * 10;
                 controllableMassEdit.incrementSlide = GetSliderIncrement(controllableMassEdit.maxValue);
                 controllableMassEdit.sigFigs = GetSigFigs(controllableMassEdit.maxValue);
+
+                controllableMassEdit.minValue = controllableMassEdit.incrementSlide;
             }
             else
 >>>>>>> Start root avionics
@@ -668,9 +692,12 @@ namespace RP0.ProceduralAvionics
                 controllableMassEdit.maxValue = Mathf.Max(GetMaximumControllableMass(), 0.001f);
 =======
                 Log("Cannot update max value yet, CurrentProceduralAvionicsConfig is null");
+<<<<<<< master
                 controllableMassEdit.maxValue = float.MaxValue;
                 controllableMassEdit.minValue = 0;
 >>>>>>> Renamings
+=======
+>>>>>>> Use minimum value > 0 for controllable mass
             }
             else
                 controllableMassEdit.maxValue = 0.001f;
@@ -781,7 +808,7 @@ namespace RP0.ProceduralAvionics
                 Log("setting cachedVolume to ", volume);
                 cachedVolume = volume;
                 SendRemainingVolume();
-                UpdateMaxValues();
+                UpdateControllableMassSlider();
                 RefreshDisplays();
 >>>>>>> Start root avionics
             }
@@ -1048,6 +1075,7 @@ namespace RP0.ProceduralAvionics
         }
 
 <<<<<<< master
+<<<<<<< master
         private string BuildTechName(ProceduralAvionicsTechNode techNode)
         {
             var sbuilder = StringBuilderCache.Acquire();
@@ -1064,6 +1092,8 @@ namespace RP0.ProceduralAvionics
     }
 =======
         // creating a field for this so we don't need to look it up every update
+=======
+>>>>>>> Use minimum value > 0 for controllable mass
         private ModuleSAS sasModule = null;
 		private void SetSASServiceLevel()
 		{
