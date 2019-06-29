@@ -1,8 +1,14 @@
 ﻿namespace RP0.ProceduralAvionics
 {
+<<<<<<< master
     static class ProceduralAvionicsUtils
     {
         private static bool _enableLogging = true;
+=======
+	static class ProceduralAvionicsUtils
+	{
+		private static bool _enableLogging = true;
+>>>>>>> ProcAvionicsTooling
 
         private const string logPreix = "[ProcAvi] - ";
         public static void Log(params string[] message)

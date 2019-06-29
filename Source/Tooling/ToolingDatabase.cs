@@ -30,6 +30,7 @@ namespace RP0
         }
 
         public static Dictionary<string, List<ToolingEntry>> toolings = new Dictionary<string, List<ToolingEntry>>();
+<<<<<<< master
 
         protected static int GetEntryIndex(float value, List<ToolingEntry> list, out int min)
         {
@@ -56,6 +57,34 @@ namespace RP0
             return -1;
         }
 
+=======
+
+        protected static int GetEntryIndex(float value, List<ToolingEntry> list, out int min)
+        {
+            min = 0;
+            int max = list.Count - 1;
+            while (min <= max)
+            {
+                int mid = (min + max) / 2;
+                switch (EpsilonCompare(value, list[mid].Value))
+                {
+                    case 0:
+                        return mid;
+
+                    case 1:
+                        min = mid + 1;
+                        break;
+
+                    default:
+                    case -1:
+                        max = mid - 1;
+                        break;
+                }
+            }
+            return -1;
+        }
+
+>>>>>>> ProcAvionicsTooling
         /// <summary>
         /// Compares two tooling sizes and checks whether their diameter and length are within a predefined epsilon (currently 4%).
         /// </summary>
@@ -71,6 +100,7 @@ namespace RP0
 
         public static int GetToolingLevel(string type, params float[] parameters)
         {
+<<<<<<< master
             if (!ToolingManager.Instance.toolingEnabled)
             {
                 return parameters.Length;
@@ -84,12 +114,23 @@ namespace RP0
                 {
                     var entryIndex = GetEntryIndex(parameters[i], entries, out _);
                     if (entryIndex == -1)
+=======
+            List<ToolingEntry> entries;
+            var level = 0;
+            if (toolings.TryGetValue(type, out entries))
+            {
+                for(int i = 0; i < parameters.Length; ++i)
+                {
+                    var entryIndex = GetEntryIndex(parameters[i], entries, out _);
+                    if(entryIndex == -1)
+>>>>>>> ProcAvionicsTooling
                     {
                         break;
                     }
                     level++;
                     entries = entries[entryIndex].Children;
                 }
+<<<<<<< master
             }
 
             return level;
@@ -139,6 +180,47 @@ namespace RP0
 
         private static void LoadNewDbFormat(ConfigNode node)
         {
+=======
+            }
+
+            return level;
+        }
+
+        public static bool UnlockTooling(string type, params float[] parameters)
+        {
+            var toolingUnlocked = false;
+            if (!toolings.TryGetValue(type, out var entries))
+            {
+                entries = new List<ToolingEntry>();
+                toolings[type] = entries;
+            }
+
+            for (int i = 0; i < parameters.Length; ++i)
+            {
+                var entryIndex = GetEntryIndex(parameters[i], entries, out var insertionIndex);
+                if(entryIndex == -1)
+                {
+                    entries.Insert(insertionIndex, new ToolingEntry(parameters[i]));
+                    entryIndex = insertionIndex;
+                    toolingUnlocked = true;
+                }
+                entries = entries[entryIndex].Children;
+            }
+
+            return toolingUnlocked;
+        }
+
+
+        public static void Load(ConfigNode node)
+        {
+            toolings.Clear();
+
+            if (node == null)
+            {
+                return;
+            }
+
+>>>>>>> ProcAvionicsTooling
             foreach (var typeNode in node.GetNodes("TYPE"))
             {
                 string type = typeNode.GetValue("type");
@@ -149,10 +231,14 @@ namespace RP0
 
                 var entries = new List<ToolingEntry>();
                 LoadEntries(typeNode, entries);
+<<<<<<< master
                 if (entries.Count > 0)
                 {
                     toolings[type] = entries;
                 }
+=======
+                toolings[type] = entries;
+>>>>>>> ProcAvionicsTooling
             }
         }
 
@@ -169,10 +255,39 @@ namespace RP0
                 var entry = new ToolingEntry(tmp);
                 LoadEntries(entryNode, entry.Children);
                 entries.Add(entry);
+<<<<<<< master
             }
         }
 
         public static void Save(ConfigNode node)
+=======
+            }
+        }
+
+        public static void Save(ConfigNode node)
+        {
+            foreach (var typeToEntries in toolings)
+            {
+                var typeNode = node.AddNode("TYPE");
+                typeNode.AddValue("type", typeToEntries.Key);
+
+                var entries = typeToEntries.Value;
+                SaveEntries(typeNode, entries);
+            }
+        }
+
+        private static void SaveEntries(ConfigNode typeNode, List<ToolingEntry> entries)
+        {
+            foreach (var entry in entries)
+            {
+                var entryNode = typeNode.AddNode("ENTRY");
+                entryNode.AddValue("value", entry.Value.ToString("G17"));
+                SaveEntries(entryNode, entry.Children);
+            }
+        }
+
+        public static void LoadOldFormat(ConfigNode node)
+>>>>>>> ProcAvionicsTooling
         {
             foreach (var typeToEntries in toolings)
             {
@@ -202,7 +317,11 @@ namespace RP0
                 if (string.IsNullOrEmpty(type))
                     continue;
 
+<<<<<<< master
                 var entries = new List<ToolingEntry>();
+=======
+                List<ToolingEntry> lst = new List<ToolingEntry>();
+>>>>>>> ProcAvionicsTooling
 
                 foreach (var n in c.GetNodes("DIAMETER"))
                 {
@@ -210,7 +329,11 @@ namespace RP0
                     if (!n.TryGetValue("diameter", ref tmp))
                         continue;
 
+<<<<<<< master
                     var diameter = new ToolingEntry(tmp);
+=======
+                    ToolingEntry d = new ToolingEntry(tmp);
+>>>>>>> ProcAvionicsTooling
 
                     var length = n.GetNode("LENGTHS");
                     if (length != null)
@@ -218,16 +341,24 @@ namespace RP0
                         foreach (ConfigNode.Value v in length.values)
                         {
                             if (float.TryParse(v.value, out tmp))
+<<<<<<< master
                             {
                                 diameter.Children.Add(new ToolingEntry(tmp));
                             }
                         }
                     }
+=======
+                                //d.lengths.Add(tmp);
+>>>>>>> ProcAvionicsTooling
 
                     entries.Add(diameter);
                 }
 
+<<<<<<< master
                 toolings[type] = entries;
+=======
+                toolings[type] = lst;
+>>>>>>> ProcAvionicsTooling
             }
         }
     }

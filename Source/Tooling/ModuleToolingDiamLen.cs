@@ -37,8 +37,14 @@ namespace RP0
 
         public override float GetToolingCost()
         {
+<<<<<<< master
             GetDimensions(out var d, out var l);
             float cost = GetLengthToolingCost(d, l);
+=======
+            float d, l;
+            GetDimensions(out d, out l);
+            float cost = lengthToolingCost.x * d * d + lengthToolingCost.y * d + lengthToolingCost.z * l + lengthToolingCost.w;
+>>>>>>> ProcAvionicsTooling
             if (ToolingDatabase.GetToolingLevel(ToolingType, d, l) == 0)
             {
                 var reductionFactor = GetCostReductionFactor(d, l);
@@ -54,7 +60,15 @@ namespace RP0
             {
                 if (ToolingDatabase.GetToolingLevel(s, d, l) > 0)
                 {
+<<<<<<< master
                     return costReductionMult;
+=======
+                    if (ToolingDatabase.GetToolingLevel(s, d, l) > 0)
+                    {
+                        mult = costReductionMult;
+                        break;
+                    }
+>>>>>>> ProcAvionicsTooling
                 }
             }
 

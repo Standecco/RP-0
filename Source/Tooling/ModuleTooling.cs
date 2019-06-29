@@ -39,7 +39,11 @@ namespace RP0
 
         public virtual string GetToolingParameterInfo() => "";
 
+<<<<<<< master
         [KSPEvent(guiActiveEditor = true, guiName = "Tool Item")]
+=======
+        [KSPEvent(guiActive = false, guiActiveEditor = true, guiName = "Tool Item")]
+>>>>>>> ProcAvionicsTooling
         public virtual void ToolingEvent()
         {
             if (IsUnlocked())
@@ -96,6 +100,7 @@ namespace RP0
             tEvent = Events["ToolingEvent"];
             try
             {
+                Debug.Log("[MT] Loading part modules");
                 LoadPartModules();
             }
             catch (Exception ex)

@@ -9,7 +9,11 @@ namespace RP0.Tooling
     {
         //Headings
         private static Parameter[] DiameterLengthParameters = new[] {new Parameter("Diameter", "m"), new Parameter("Length", "m") };
+<<<<<<< master
         private static Parameter[] AvionicsParameters = new[] { new Parameter("Contr. Mass", "t"), new Parameter("Diameter", "m"), new Parameter("Length", "m") };
+=======
+        private static Parameter[] AvionicsParameters = new[] { new Parameter("Diameter", "m"), new Parameter("Length", "m"), new Parameter("Contr. Mass", "t") };
+>>>>>>> ProcAvionicsTooling
 
         public static Parameter[] GetParametersForToolingType(string type)
         {
