@@ -151,7 +151,9 @@ namespace RP0
 =======
             GetDimensions(out var diameter, out var length, out var controllableMass);
             var toolingLevel = ToolingDatabase.GetToolingLevel(ToolingType, controllableMass, diameter, length);
-            var toolingCosts = new[] { GetControlledMassToolingCost(), GetDiameterToolingCost(diameter), GetLengthToolingCost(diameter, length)};
+            var avToolingFactor = 0.8f;
+            var dimensionToolingFactor = 2 - avToolingFactor - procAvionics.Utilization;
+            var toolingCosts = new[] { GetControlledMassToolingCost() * avToolingFactor, GetDiameterToolingCost(diameter) * dimensionToolingFactor, GetLengthToolingCost(diameter, length) * dimensionToolingFactor};
             var toolingCost = 0f;
             for(int i = toolingLevel; i < 3; ++i)
             {
@@ -159,11 +161,15 @@ namespace RP0
             }
 
 <<<<<<< master
+<<<<<<< master
             return (baseCost + procAvionics.GetModuleCost(0, ModifierStagingSituation.UNSTAGED) * 15) * finalToolingCostMultiplier;
 >>>>>>> ProcAvionicsTooling
 =======
             return toolingCost * 0.5f;
 >>>>>>> Use controlled mass first for tooling
+=======
+            return toolingCost;
+>>>>>>> Make dimension tooling cost based on utilization
         }
 
         private float GetControlledMassToolingCost() => procAvionics.GetModuleCost(0, ModifierStagingSituation.UNSTAGED) * 20;

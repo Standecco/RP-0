@@ -906,11 +906,16 @@ namespace RP0.ProceduralAvionics
 
         #endregion
 
+<<<<<<< master
         public new static string BackgroundUpdate(Vessel v,
             ProtoPartSnapshot part_snapshot, ProtoPartModuleSnapshot module_snapshot,
             PartModule proto_part_module, Part proto_part,
             Dictionary<string, double> availableResources, List<KeyValuePair<string, double>> resourceChangeRequest,
             double elapsed_s) => ModuleAvionics.BackgroundUpdate(v, part_snapshot, module_snapshot, proto_part_module, proto_part, availableResources, resourceChangeRequest, elapsed_s);
+=======
+            utilizationDisplay = String.Format("{0:0.#}%", Utilization* 100);
+            Log("Utilization display: ", utilizationDisplay);
+>>>>>>> Make dimension tooling cost based on utilization
 
         private void RefreshDisplays()
         {
@@ -921,7 +926,7 @@ namespace RP0.ProceduralAvionics
             Log($"RefreshDisplays() Controllable mass: {controllableMass}, mass: {massDisplay} cost: {costDisplay}, Utilization: {utilizationDisplay}");
         }
 
-        private float GetControllableUtilizationPercentage() => GetAvionicsMass() / MaxAvionicsMass;
+        public float Utilization => GetAvionicsMass() / MaxAvionicsMass;
 
         private float MaxAvionicsMass => cachedVolume * avionicsDensity;
 
