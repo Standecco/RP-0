@@ -44,6 +44,7 @@ namespace RP0
         public override string GetToolingParameterInfo()
         {
 <<<<<<< master
+<<<<<<< master
             return $"{Math.Round(ControllableMass, 3)} t x {base.GetToolingParameterInfo()}{GetInternalTankDiameterInfo()}";
         }
 
@@ -60,6 +61,9 @@ namespace RP0
 =======
             return base.GetToolingParameterInfo() + $" x {Math.Round(ControllableMass, 3)} t";
 >>>>>>> ProcAvionicsTooling
+=======
+            return $"{Math.Round(ControllableMass, 3)} t x {base.GetToolingParameterInfo()}";
+>>>>>>> Use controlled mass first for tooling
         }
 
         public override float GetToolingCost()
@@ -146,12 +150,23 @@ namespace RP0
             return GetDimensionModuleCost(internalTankDiameter, length, costMultDL) * tankCount;
 =======
             GetDimensions(out var diameter, out var length, out var controllableMass);
-            var toolingLevel = ToolingDatabase.GetToolingLevel(ToolingType, diameter, length, controllableMass);
-            var baseCost = toolingLevel < 3 ? base.GetToolingCost() / finalToolingCostMultiplier : 0;
+            var toolingLevel = ToolingDatabase.GetToolingLevel(ToolingType, controllableMass, diameter, length);
+            var toolingCosts = new[] { GetControlledMassToolingCost(), GetDiameterToolingCost(diameter), GetLengthToolingCost(diameter, length)};
+            var toolingCost = 0f;
+            for(int i = toolingLevel; i < 3; ++i)
+            {
+                toolingCost += toolingCosts[i];
+            }
 
+<<<<<<< master
             return (baseCost + procAvionics.GetModuleCost(0, ModifierStagingSituation.UNSTAGED) * 15) * finalToolingCostMultiplier;
 >>>>>>> ProcAvionicsTooling
+=======
+            return toolingCost * 0.5f;
+>>>>>>> Use controlled mass first for tooling
         }
+
+        private float GetControlledMassToolingCost() => procAvionics.GetModuleCost(0, ModifierStagingSituation.UNSTAGED) * 20;
 
         public override void PurchaseTooling()
         {
@@ -172,8 +187,12 @@ namespace RP0
             ToolingDatabase.UnlockTooling(TankToolingType, internalTankDiameter, internalTankDiameter);
 =======
             GetDimensions(out var diameter, out var length, out var controllableMass);
+<<<<<<< master
             ToolingDatabase.UnlockTooling(ToolingType, diameter, length, controllableMass);
 >>>>>>> ProcAvionicsTooling
+=======
+            ToolingDatabase.UnlockTooling(ToolingType, controllableMass, diameter, length);
+>>>>>>> Use controlled mass first for tooling
         }
 
         public override bool IsUnlocked()
@@ -206,7 +225,7 @@ namespace RP0
                 return true;
             }
             GetDimensions(out var diameter, out var length, out var controllableMass);
-            return ToolingDatabase.GetToolingLevel(ToolingType, diameter, length, controllableMass) == 3;
+            return ToolingDatabase.GetToolingLevel(ToolingType, controllableMass, diameter, length) == 3;
         }
 
         private void GetDimensions(out float diameter, out float length, out float controllableMass)
