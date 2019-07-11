@@ -409,6 +409,7 @@ namespace RP0.ProceduralAvionics
 >>>>>>> Use infinite controllable mass legacy avionics config for legacy crafts
             SetControllableMassForLegacyCraft();
             AvionicsConfigChanged();
+<<<<<<< master
             SetupGUI();
             base.OnStart(state);
             massLimit = controllableMass;
@@ -430,15 +431,37 @@ namespace RP0.ProceduralAvionics
 				OnPartVolumeChanged(cachedEventData);
 			}
 =======
+=======
+            InjectCachedEventData();
+            base.Start();
+            SetScienceContainerIfNeeded();
+            started = true;
+            Log("Start finished");
+        }
+
+        private void SetScienceContainerIfNeeded()
+        {
+            if (!HighLogic.LoadedSceneIsEditor)
+            {
+                SetScienceContainer();
+            }
+        }
+
+        private void InjectCachedEventData()
+        {
+>>>>>>> Refactoring
             if (cachedEventData != null)
             {
                 OnPartVolumeChanged(cachedEventData);
             }
+<<<<<<< master
 >>>>>>> Use infinite controllable mass legacy avionics config for legacy crafts
 
             base.Start();
             started = true;
             Log("Start finished");
+=======
+>>>>>>> Refactoring
         }
 
         private void SetFallbackConfigForLegacyCraft()
@@ -547,13 +570,6 @@ namespace RP0.ProceduralAvionics
 					Log("Volume fixed, refreshing part window");
 				}
 				RefreshPartWindow();
-			}
-		}
-
-        public void FixedUpdate()
-		{
-			if (!HighLogic.LoadedSceneIsEditor) {
-				SetScienceContainer();
 			}
 		}
 
@@ -1117,6 +1133,7 @@ namespace RP0.ProceduralAvionics
 
 <<<<<<< master
 <<<<<<< master
+<<<<<<< master
         private string BuildTechName(ProceduralAvionicsTechNode techNode)
         {
             var sbuilder = StringBuilderCache.Acquire();
@@ -1155,19 +1172,17 @@ namespace RP0.ProceduralAvionics
 =======
 >>>>>>> Remove SAS per tech level support
 		private bool scienceContainerFiltered = false;
+=======
+>>>>>>> Refactoring
 		private void SetScienceContainer()
 		{
-			if (scienceContainerFiltered) {
-				return;
-			}
 			if (!hasScienceContainer) {
 				var module = part.FindModuleImplementing<ModuleScienceContainer>();
 				if (module != null) {
 					part.RemoveModule(module);
 				}
 			}
-			Log("Setting science container to ", (hasScienceContainer ? "enabled." : "disabled."));
-			scienceContainerFiltered = true;
+			Log("Setting science container to ", hasScienceContainer ? "enabled." : "disabled.");
 		}
 
         private void RefreshCostAndMassDisplays()
