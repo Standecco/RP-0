@@ -60,6 +60,7 @@ namespace RP0.ProceduralAvionics
             ConfigNode.CreateConfigFromObject(this, node);
         }
 
+<<<<<<< master
         public void InitializeTechNodes()
         {
             ProceduralAvionicsUtils.Log("TechNode deserialization needed");
@@ -73,4 +74,19 @@ namespace RP0.ProceduralAvionics
             ProceduralAvionicsUtils.Log("Deserialized " + techNodes.Count + " techNodes");
         }
     }
+=======
+		public void InitializeTechNodes()
+		{
+			ProceduralAvionicsUtils.Log("TechNode deserialization needed");
+			techNodes = new Dictionary<string, ProceduralAvionicsTechNode>();
+			var techNodeList = techNodesSerialized == null ? new List<ProceduralAvionicsTechNode>() : ObjectSerializer.Deserialize<List<ProceduralAvionicsTechNode>>(techNodesSerialized);
+			foreach (var item in techNodeList)
+			{
+				ProceduralAvionicsUtils.Log("Deserialized " + item.name);
+				techNodes.Add(item.name, item);
+			}
+			ProceduralAvionicsUtils.Log("Deserialized " + techNodes.Count + " techNodes");
+		}
+	}
+>>>>>>> Use infinite controllable mass legacy avionics config for legacy crafts
 }

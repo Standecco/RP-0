@@ -27,6 +27,7 @@ namespace RP0.ProceduralAvionics
             ProceduralAvionicsUtils.Log("ScenarioModule onload");
             base.OnLoad(node);
 
+<<<<<<< master
             var unlockedTechNode = node.GetNode(UNLOCKED_TECH_NODE_NAME);
 
             string serialized = "";
@@ -41,4 +42,20 @@ namespace RP0.ProceduralAvionics
             ProceduralAvionicsTechManager.SetUnlockedTechState(serialized);
         }
     }
+=======
+			var unlockedTechNode = node.GetNode(UNLOCKED_TECH_NODE_NAME);
+
+            string serialized = "";
+
+			if (unlockedTechNode != null) {
+				string param = unlockedTechNode.GetValue(UNLOCKED_TECH_STATE);
+				if (param != null) {
+					serialized = param;
+				}
+			}
+			ProceduralAvionicsUtils.Log("setting unlocked state: ", serialized);
+			ProceduralAvionicsTechManager.SetUnlockedTechState(serialized);
+		}
+	}
+>>>>>>> Use infinite controllable mass legacy avionics config for legacy crafts
 }

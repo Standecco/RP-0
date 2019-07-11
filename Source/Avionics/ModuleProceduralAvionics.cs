@@ -37,7 +37,7 @@ namespace RP0.ProceduralAvionics
 
         [KSPField(isPersistant = true, guiName = "Contr. Mass", guiActive = false, guiActiveEditor = true, guiUnits = "\u2009t"),
 		 UI_FloatEdit(scene = UI_Scene.Editor, minValue = 0f, incrementLarge = 10f, incrementSmall = 1f, incrementSlide = 0.05f, sigFigs = 3, unit = "\u2009t")]
-		public float controllableMass = 0;
+		public float controllableMass = -1;
 
 		[KSPField(isPersistant = true, guiActiveEditor = true, guiActive = false, guiName = "Configuration"), UI_ChooseOption(scene = UI_Scene.Editor)]
 		public string avionicsConfigName;
@@ -186,7 +186,7 @@ namespace RP0.ProceduralAvionics
 				{
 					return CurrentProceduralAvionicsConfig.TechNodes[avionicsTechLevel];
 				}
-				return null;
+                return new ProceduralAvionicsTechNode();
 			}
 		}
 >>>>>>> Use a real fuels tank for avionics
@@ -369,6 +369,7 @@ namespace RP0.ProceduralAvionics
 
 		private bool started = false;
 		public new void Start()
+<<<<<<< master
 		{
 			Log("Start called");
 
@@ -395,6 +396,12 @@ namespace RP0.ProceduralAvionics
             Log($"OnStart for {part} in {HighLogic.LoadedScene}");
             SetFallbackConfigForLegacyCraft();
             SetupConfigNameFields();
+=======
+        {
+            SetFallbackConfigForLegacyCraft();
+            UpdateConfigSliders();
+            BindUIChangeCallbacks();
+>>>>>>> Use infinite controllable mass legacy avionics config for legacy crafts
             SetControllableMassForLegacyCraft();
             AvionicsConfigChanged();
             SetupGUI();
@@ -406,6 +413,7 @@ namespace RP0.ProceduralAvionics
         }
 
 <<<<<<< master
+<<<<<<< master
         public void Start()
         {
             // Delay SetScienceContainer to Unity.Start() to allow PartModule removal
@@ -416,13 +424,41 @@ namespace RP0.ProceduralAvionics
 			if (cachedEventData != null) {
 				OnPartVolumeChanged(cachedEventData);
 			}
+=======
+            if (cachedEventData != null)
+            {
+                OnPartVolumeChanged(cachedEventData);
+            }
+>>>>>>> Use infinite controllable mass legacy avionics config for legacy crafts
 
-			base.Start();
+            base.Start();
             started = true;
             Log("Start finished");
-		}
+        }
 
-		private bool callbacksBound = false;
+        private void SetFallbackConfigForLegacyCraft()
+        {
+            if (HighLogic.LoadedSceneIsEditor && !ProceduralAvionicsTechManager.GetAvailableConfigs().Contains(avionicsConfigName))
+            {
+                Log($"No valid config set ({avionicsConfigName})");
+                avionicsConfigName = ProceduralAvionicsTechManager.GetPurchasedConfigs().First();
+            }
+            if (string.IsNullOrEmpty(avionicsTechLevel))
+            {
+                avionicsTechLevel = ProceduralAvionicsTechManager.GetMaxUnlockedTech(avionicsConfigName);
+                Log("No tech level set, using ", avionicsTechLevel);
+            }
+        }
+
+        private void SetControllableMassForLegacyCraft()
+        {
+            if (controllableMass < 0)
+            {
+                controllableMass = HighLogic.LoadedSceneIsFlight ? float.MaxValue : 0;
+            }
+        }
+
+        private bool callbacksBound = false;
 		private void BindUIChangeCallbacks()
 		{
 			if (!callbacksBound) {
@@ -744,12 +780,12 @@ namespace RP0.ProceduralAvionics
         private void UpdateConfigSliders()
 		{
 			Log("Updating Config Slider");
-			BaseField avionicsConfigField = Fields[nameof(avionicsConfigName)];
+			var avionicsConfigField = Fields[nameof(avionicsConfigName)];
 			avionicsConfigField.guiActiveEditor = true;
-			UI_ChooseOption range = (UI_ChooseOption)avionicsConfigField.uiControlEditor;
+			var range = (UI_ChooseOption)avionicsConfigField.uiControlEditor;
 			range.options = ProceduralAvionicsTechManager.GetPurchasedConfigs().ToArray();
 
-			if (String.IsNullOrEmpty(avionicsConfigName)) {
+			if (string.IsNullOrEmpty(avionicsConfigName)) {
 				avionicsConfigName = range.options[0];
 				Log("Defaulted config to ", avionicsConfigName);
 			}
@@ -1130,17 +1166,11 @@ namespace RP0.ProceduralAvionics
 		private int selectedConfigIndex = 0;
 		void WindowFunction(int windowID)
 		{
-			string[] configNames = ProceduralAvionicsTechManager.GetAvailableConfigs().ToArray();
-
-			selectedConfigIndex = GUILayout.Toolbar(
-				selectedConfigIndex,
-				configNames);
-
-			string guiAvionicsConfigName = configNames[selectedConfigIndex];
-
-			ProceduralAvionicsConfig currentlyDisplayedConfigs =
-				ProceduralAvionicsTechManager.GetProceduralAvionicsConfig(guiAvionicsConfigName);
-			foreach (ProceduralAvionicsTechNode techNode in currentlyDisplayedConfigs.TechNodes.Values) {
+			var configNames = ProceduralAvionicsTechManager.GetAvailableConfigs().ToArray();
+			selectedConfigIndex = GUILayout.Toolbar(selectedConfigIndex, configNames);
+			var guiAvionicsConfigName = configNames[selectedConfigIndex];
+			var currentlyDisplayedConfigs = ProceduralAvionicsTechManager.GetProceduralAvionicsConfig(guiAvionicsConfigName);
+			foreach (var techNode in currentlyDisplayedConfigs.TechNodes.Values) {
 				if (!techNode.IsAvailable) {
 					continue;
 				}
@@ -1150,8 +1180,8 @@ namespace RP0.ProceduralAvionics
 					GUILayout.Label("Storage Container: " + (techNode.hasScienceContainer ? "Yes" : "No"));
 				}
 				else {
-					bool switchedConfig = false;
-					int unlockCost = ProceduralAvionicsTechManager.GetUnlockCost(guiAvionicsConfigName, techNode);
+					var switchedConfig = false;
+					var unlockCost = ProceduralAvionicsTechManager.GetUnlockCost(guiAvionicsConfigName, techNode);
 					if (unlockCost == 0) {
 						if (GUILayout.Button("Switch to " + BuildTechName(techNode))) {
 							switchedConfig = true;
