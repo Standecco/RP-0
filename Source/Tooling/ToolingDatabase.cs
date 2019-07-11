@@ -220,7 +220,20 @@ namespace RP0
                 return;
             }
 
+<<<<<<< master
 >>>>>>> ProcAvionicsTooling
+=======
+            LoadNewDbFormat(node);
+
+            if (toolings.Count == 0)
+            {
+                LoadOldDbFormat(node);
+            }
+        }
+
+        private static void LoadNewDbFormat(ConfigNode node)
+        {
+>>>>>>> Restore loading of legacy tooling DBs
             foreach (var typeNode in node.GetNodes("TYPE"))
             {
                 string type = typeNode.GetValue("type");
@@ -232,13 +245,19 @@ namespace RP0
                 var entries = new List<ToolingEntry>();
                 LoadEntries(typeNode, entries);
 <<<<<<< master
+<<<<<<< master
+=======
+>>>>>>> Restore loading of legacy tooling DBs
                 if (entries.Count > 0)
                 {
                     toolings[type] = entries;
                 }
+<<<<<<< master
 =======
                 toolings[type] = entries;
 >>>>>>> ProcAvionicsTooling
+=======
+>>>>>>> Restore loading of legacy tooling DBs
             }
         }
 
@@ -286,6 +305,7 @@ namespace RP0
             }
         }
 
+<<<<<<< master
         public static void LoadOldFormat(ConfigNode node)
 >>>>>>> ProcAvionicsTooling
         {
@@ -311,6 +331,10 @@ namespace RP0
 
         public static void LoadOldDbFormat(ConfigNode node)
         {
+=======
+        public static void LoadOldDbFormat(ConfigNode node)
+        {
+>>>>>>> Restore loading of legacy tooling DBs
             foreach (var c in node.GetNodes("TYPE"))
             {
                 string type = c.GetValue("type");
@@ -318,10 +342,14 @@ namespace RP0
                     continue;
 
 <<<<<<< master
+<<<<<<< master
                 var entries = new List<ToolingEntry>();
 =======
                 List<ToolingEntry> lst = new List<ToolingEntry>();
 >>>>>>> ProcAvionicsTooling
+=======
+                var entries = new List<ToolingEntry>();
+>>>>>>> Restore loading of legacy tooling DBs
 
                 foreach (var n in c.GetNodes("DIAMETER"))
                 {
@@ -330,10 +358,14 @@ namespace RP0
                         continue;
 
 <<<<<<< master
+<<<<<<< master
                     var diameter = new ToolingEntry(tmp);
 =======
                     ToolingEntry d = new ToolingEntry(tmp);
 >>>>>>> ProcAvionicsTooling
+=======
+                    var diameter = new ToolingEntry(tmp);
+>>>>>>> Restore loading of legacy tooling DBs
 
                     var length = n.GetNode("LENGTHS");
                     if (length != null)
@@ -342,23 +374,33 @@ namespace RP0
                         {
                             if (float.TryParse(v.value, out tmp))
 <<<<<<< master
+<<<<<<< master
+=======
+>>>>>>> Restore loading of legacy tooling DBs
                             {
                                 diameter.Children.Add(new ToolingEntry(tmp));
                             }
                         }
                     }
+<<<<<<< master
 =======
                                 //d.lengths.Add(tmp);
 >>>>>>> ProcAvionicsTooling
+=======
+>>>>>>> Restore loading of legacy tooling DBs
 
                     entries.Add(diameter);
                 }
 
 <<<<<<< master
+<<<<<<< master
                 toolings[type] = entries;
 =======
                 toolings[type] = lst;
 >>>>>>> ProcAvionicsTooling
+=======
+                toolings[type] = entries;
+>>>>>>> Restore loading of legacy tooling DBs
             }
         }
     }
