@@ -20,7 +20,11 @@ namespace RP0
         [KSPField]
         public float disabledkW = -1f;
 
+<<<<<<< master
         [KSPField(isPersistant = true, guiActive = true, guiName = "Power", guiFormat = "N1", guiUnits = "\u2009W", groupName = PAWGroup, groupDisplayName = PAWGroup)]
+=======
+        [KSPField(guiActive = false, guiName = "Power", guiFormat = "N1", guiUnits = "\u2009W")]
+>>>>>>> Fix double colon display
         public float currentWatts = 0f;
 
         [KSPField]
@@ -213,11 +217,20 @@ namespace RP0
 
             if (GetToggleable() && GetDisabledkW() >= 0)
             {
+<<<<<<< master
                 retStr += "\nCan be disabled, to lower wattage from " 
                     + $"{(GetEnabledkW() * 1000d):N1}\u2009W to {(GetDisabledkW() * 1000d):N1}\u2009W.";
             } else
             {
                 retStr += $"\nConsumes {(GetEnabledkW() * 1000d):N1}\u2009W";
+=======
+                double resRate = ResourceRate();
+                if(resRate >= 0)
+                {
+                    retStr += "\nCan be disabled, to lower command module wattage from " 
+                        + (GetEnabledkW() * 1000d).ToString("N1") + "\u2009W to " + (GetDisabledkW() * 1000d).ToString("N1") + "\u2009W.";
+                }
+>>>>>>> Fix double colon display
             }
 
             if (!string.IsNullOrEmpty(techRequired))
