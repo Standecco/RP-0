@@ -118,6 +118,7 @@ namespace RP0.ProceduralAvionics
         [KSPField(isPersistant = true)]
         public float disabledPowerFactor;
 
+<<<<<<< master
         [KSPField(isPersistant = true)]
 		public int SASServiceLevel = -1;
 >>>>>>> Start root avionics
@@ -133,6 +134,10 @@ namespace RP0.ProceduralAvionics
             }
             return null;
         }
+=======
+		[KSPField(isPersistant = true)]
+		public bool hasScienceContainer = false;
+>>>>>>> Remove SAS per tech level support
 
 <<<<<<< master
         public ProceduralAvionicsConfig CurrentProceduralAvionicsConfig { get; private set; }
@@ -548,7 +553,6 @@ namespace RP0.ProceduralAvionics
         public void FixedUpdate()
 		{
 			if (!HighLogic.LoadedSceneIsEditor) {
-				SetSASServiceLevel();
 				SetScienceContainer();
 			}
 		}
@@ -911,11 +915,16 @@ namespace RP0.ProceduralAvionics
             avionicsDensity = CurrentProceduralAvionicsTechNode.avionicsDensity;
 >>>>>>> Start root avionics
 
+<<<<<<< master
         private void UpdateMassLimitsAndVolume()
         {
             ClampControllableMass();
             UpdateControllableMassSlider();
             SendRemainingVolume();
+=======
+            hasScienceContainer = CurrentProceduralAvionicsTechNode.hasScienceContainer;
+            interplanetary = CurrentProceduralAvionicsTechNode.interplanetary;
+>>>>>>> Remove SAS per tech level support
         }
 
         private void SendRemainingVolume()
@@ -1117,6 +1126,7 @@ namespace RP0.ProceduralAvionics
             return sbuilder.ToStringAndRelease();
         }
 
+<<<<<<< master
         private static string BuildSasAndScienceString(ProceduralAvionicsTechNode techNode) => techNode.hasScienceContainer ? " {SC}" : "";
 
         private string BuildCostString(int cost) =>
@@ -1142,6 +1152,8 @@ namespace RP0.ProceduralAvionics
 			}
 		}
 
+=======
+>>>>>>> Remove SAS per tech level support
 		private bool scienceContainerFiltered = false;
 		private void SetScienceContainer()
 		{
@@ -1192,7 +1204,6 @@ namespace RP0.ProceduralAvionics
 				}
 				if (techNode == CurrentProceduralAvionicsTechNode) {
 					GUILayout.Label("Current Config: " + techNode.name);
-					GUILayout.Label("SAS Level: " + techNode.SASServiceLevel.ToString());
 					GUILayout.Label("Storage Container: " + (techNode.hasScienceContainer ? "Yes" : "No"));
 				}
 				else {
@@ -1243,20 +1254,9 @@ namespace RP0.ProceduralAvionics
 			return sbuilder.ToStringAndRelease();
 		}
 
-		private static string BuildSasAndScienceString(ProceduralAvionicsTechNode techNode)
-		{
-			StringBuilder sbuilder = StringBuilderCache.Acquire();
-			sbuilder.Append(" {SAS: ");
-			sbuilder.Append(techNode.SASServiceLevel);
-			if (techNode.hasScienceContainer) {
-				sbuilder.Append(", SC");
-			}
-			sbuilder.Append("}");
+        private static string BuildSasAndScienceString(ProceduralAvionicsTechNode techNode) => techNode.hasScienceContainer ? " {SC}" : "";
 
-			return sbuilder.ToString();
-		}
-
-		private string BuildCostString(int cost)
+        private string BuildCostString(int cost)
 		{
 			if (cost == 0 || HighLogic.CurrentGame.Parameters.Difficulty.BypassEntryPurchaseAfterResearch) {
 				return String.Empty;
