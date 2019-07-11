@@ -984,8 +984,12 @@ namespace RP0.ProceduralAvionics
             if (kW >= 1)
 >>>>>>> ProcAvionicsTooling
             {
+<<<<<<< master
                 powerConsumptionBuilder.Append(" /");
                 AppendPowerString(powerConsumptionBuilder, dkW);
+=======
+                powerConsumptionBuilder.AppendFormat(kwFormat, kW).Append("\u2009kW");
+>>>>>>> Use thin space as unit separator
             }
             powerRequirementsDisplay = powerConsumptionBuilder.ToStringAndRelease();
         }
@@ -1002,8 +1006,12 @@ namespace RP0.ProceduralAvionics
         {
             if (!CurrentProceduralAvionicsTechNode.hasScienceContainer)
             {
+<<<<<<< master
                 if (part.FindModuleImplementing<ModuleScienceContainer>() is ModuleScienceContainer module)
                     part.RemoveModule(module);
+=======
+                powerConsumptionBuilder.AppendFormat(wFormat, kW * 1000).Append("\u2009W");
+>>>>>>> Use thin space as unit separator
             }
             Log($"Setting science container to {(CurrentProceduralAvionicsTechNode.hasScienceContainer ? "enabled." : "disabled.")}");
         }
@@ -1038,6 +1046,7 @@ namespace RP0.ProceduralAvionics
                 }
                 if (techNode == CurrentProceduralAvionicsTechNode)
                 {
+<<<<<<< master
                     GUILayout.Label("Current Config: " + techNode.name);
                     GUILayout.Label("Storage Container: " + (techNode.hasScienceContainer ? "Yes" : "No"));
                 }
@@ -1079,6 +1088,13 @@ namespace RP0.ProceduralAvionics
                         AvionicsConfigChanged();
                         MonoUtilities.RefreshContextWindows(part);
                     }
+=======
+                    powerConsumptionBuilder.AppendFormat(kwFormat, dkW).Append("\u2009kW");
+                }
+                else
+                {
+                    powerConsumptionBuilder.AppendFormat(wFormat, dkW * 1000).Append("\u2009W");
+>>>>>>> Use thin space as unit separator
                 }
             }
             GUILayout.Label(" ");
