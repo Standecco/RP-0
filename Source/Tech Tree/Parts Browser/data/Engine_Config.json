@@ -10880,10 +10880,14 @@
         "engine_config": "Castor-1",
         "upgrade": false,
 <<<<<<< master
+<<<<<<< master
         "entry_cost_mods": "4000, SolidsHollow",
 =======
         "entry_cost_mods": "Castor-1",
 >>>>>>> Reduce tech node & entry costs for early solid motors
+=======
+        "entry_cost_mods": "4000, SolidsHollow",
+>>>>>>> Fix Castor 1 ECMs
         "identical_part_name": "",
         "module_tags": []
     },
